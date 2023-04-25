@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Optimization
@@ -40,10 +40,8 @@ namespace Optimization
         {
             if (HasFreeElement(out var element, activeted))
                 return element;
-
             if (_autoExpand)
-                CreateObject(true);
-
+                return CreateObject(true);
             throw new System.Exception($"There is no elements in pool of type {typeof(T)}");
         }
 
@@ -54,11 +52,12 @@ namespace Optimization
             for (int i = 0; i < countInPool; i++) 
                 CreateObject();
         }
-        private void CreateObject(bool isActiveByDefault = false)
+        private T CreateObject(bool isActiveByDefault = false)
         {
             var createdObj = Object.Instantiate(this._prefab, this.Container);
             createdObj.gameObject.SetActive(isActiveByDefault);
             _pool.Add(createdObj);
+            return _pool[^1];
         }
     }
 }
